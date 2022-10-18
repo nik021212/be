@@ -1,0 +1,66 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"description": "CommunityCurvesDto",
+	"type": "object",
+	"properties": {
+		"community": {
+			"type": "integer"
+		},
+		"start": {
+			"type": "string"
+		},
+		"stop": {
+			"type": "string"
+		},
+		"point": {
+			"type": "integer"
+		},
+		"consumo": {
+			"type": "number"
+		},
+		"produzione": {
+			"type": "number"
+		},
+		"batteria": {
+			"type": "number"
+		},
+		"condivisa": {
+			"type": "number"
+		},
+		"prelevata": {
+			"type": "number"
+		},
+		"immessa": {
+			"type": "number"
+		},
+		"data": {
+			"type": "array",
+            "items": {
+				"type": "object",
+                "properties": {
+					"name": {
+						"type": "string"
+					},
+					"consumo": {
+						"type": "number"
+					},
+					"produzione": {
+						"type": "number"
+					},
+					"batteria": {
+						"type": "number"
+					},
+					"condivisa": {
+						"type": "number"
+					},
+					"prelevata": {
+						"type": "number"
+					},
+					"immessa": {
+						"type": "number"
+					}
+				}
+			}
+		}
+	}
+}

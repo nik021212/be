@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "description": "UserDto",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "email" : {
+      "type" : "string"
+    },
+    "telephone" : {
+      "type" : "string"
+    },
+    "grant": {  "type" : "array" , 
+                "items": {"type" : "string" }
+    },
+    "user": {
+      "type" : "string",
+      "description": "Current user"
+    },
+    "givenName": {
+      "type": "string"
+    },
+    "isPresent" : {
+      "type" : "boolean"
+    },
+    "message" : {
+      "type" : "string"
+    }
+  },
+  "required": [ "email", "firstname", "lastname", "isAdmin" ]
+}

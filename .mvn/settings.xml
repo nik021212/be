@@ -1,0 +1,20 @@
+<settings>
+    <servers>
+        <server>
+            <id>private-nexus</id>
+            <username>${env.CI_MAVEN_REPO_USER}</username>
+            <password>${env.CI_MAVEN_REPO_PASSWORD}</password>
+        </server>
+        <server>
+            <id>innersource</id>
+            <configuration>
+                <httpHeaders>
+                  <property>
+                    <name>Job-Token</name>
+                    <value>${CI_JOB_TOKEN}</value>                  
+                  </property>
+                </httpHeaders>
+              </configuration>
+        </server>        
+    </servers>
+</settings>

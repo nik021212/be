@@ -1,0 +1,64 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Open API definition
+  license:
+    name: Sopra Steria
+servers:
+  - url: /intervalli/v1
+paths:  
+  /intevalli/{id}:
+    get:
+      summary: Get curve
+      description: Get curve
+      operationId: getCurve
+      parameters:
+      - name: id
+        in: path
+        description: 'id of the curve'
+        required: true
+        schema:
+          type: integer
+      - name: point
+        in: query
+        description: 'number of graph points'
+        required: true
+        schema:
+          type: integer
+      - name: start
+        in: query
+        description: 'start timestamp of community graph'
+        required: true
+        schema:
+          type: string
+      - name: stop
+        in: query
+        description: 'stop timestamp of community graph'
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Return the comunity curves
+          content:
+            application/json:
+             schema:
+              $ref: '../schemas/CurveDto.json'
+        400:
+          description: Bad Request
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  

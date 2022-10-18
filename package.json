@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "utilities to manage apis",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "genTypescriptClients": "scripts/genTypescriptClients.sh",
+    "publishTypescriptClients": "scripts/publishTypescriptClients.sh",
+    "genOpenApiModel-deprecated": "openapi-generator-cli generate -g spring -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true -i ",
+    "genJsonExamples": "node bin/example_generator.js components/schemas generated-jsonExamples",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matteo Campanella",
+  "license": "ISC",
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
+    "ajv": "^8.2.0",
+    "ajv-cli": "^5.0.0",
+    "ajv-formats": "^2.0.2",
+    "json-schema-faker": "^0.5.0-rcv.40"
+  }
+}

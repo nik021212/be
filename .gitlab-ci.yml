@@ -1,0 +1,82 @@
+.archive-build-artifact: &archive-build-artifact |
+  tar czf target.tgz target/
+
+.extract-build-artifact: &extract-build-artifact |
+  tar xzf target.tgz
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+
+stages:
+  - build
+  - test
+  - deploy
+
+image: openjdk
+
+variables:
+  ARTIFACT_ID: noNameApp
+  CI_NPM_REPO_URL: //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+  CI_NPM_REPO_AUTH: ${CI_JOB_TOKEN}
+
+before_script:
+  - export ARTIFACT_ID=$(sh ./mvnw org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+  - echo "ARTIFACT_ID is ${ARTIFACT_ID}"
+
+build_server:
+  stage: build
+  script:
+    - sh ./mvnw package -DskipTests -Dci_branch=${CI_COMMIT_REF_SLUG} -Dci_commitSHA=${CI_COMMIT_SHA}
+    - *archive-build-artifact
+  artifacts:
+    paths:
+      - target.tgz    
+
+build_typescript_client:
+  image: timbru31/java-node:latest
+  stage: build
+  script:
+      - chmod a+x scripts/*
+      - npm install
+      - npm run genTypescriptClients -- ${CI_PROJECT} ${CI_NPM_REPO_URL}
+      - echo "@${CI_PROJECT}:registry=https:${CI_NPM_REPO_URL}" > ~/.npmrc
+      - echo "${CI_NPM_REPO_URL}:always-auth=true" >> ~/.npmrc
+      - echo "${CI_NPM_REPO_URL}:_auth=\"${CI_NPM_REPO_AUTH}\"" >> ~/.npmrc
+      - echo "${CI_NPM_REPO_URL}:_authToken=\"${CI_NPM_REPO_AUTH}\"" >> ~/.npmrc
+      - cat ~/.npmrc
+      - npm run publishTypescriptClients -- ${CI_COMMIT_REF_NAME}
+  only:
+    - main
+    - production
+    - staging      
+
+unit_test:
+  stage: test
+  script:
+    - *extract-build-artifact
+    - sh ./mvnw verify -Dci_branch=${CI_COMMIT_REF_SLUG} -Dci_commitSHA=${CI_COMMIT_SHA}
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+
+deploy_jar_snapshot:
+  stage: deploy
+  script:
+    - *extract-build-artifact
+    - sh ./mvnw deploy -DskipTests -Dci_branch=${CI_COMMIT_REF_SLUG} -Dci_commitSHA=SNAPSHOT -Dci_project_id=${CI_PROJECT_ID}
+  environment:
+    DEV
+  only:
+    - main
+
+deploy_jar_release:
+  stage: deploy
+  script:
+    - *extract-build-artifact
+    - sh ./mvnw deploy -DskipTests -Dci_branch=${CI_COMMIT_REF_SLUG} -Dci_commitSHA=${CI_COMMIT_SHA} -Dci_project_id=${CI_PROJECT_ID}
+  environment:
+    DEV
+  only:
+    - production
+    - staging

@@ -1,0 +1,248 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Open API definition
+  license:
+    name: Sopra Steria
+servers:
+  - url: /portaleMisure/v1
+paths:
+  /multi-upload:
+    post:
+      summary: multi upload
+      operationId: 'multiUpload'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                # The property name 'file' will be used for all files.
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: multi upload OK 
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+#   /profile:
+#     post:
+#       tags:
+#         - LOGIN    
+#       summary: getUserProfiles
+#       description: List of electrical operators that the user can simulate with the relative roles to be assumed
+#       operationId: getUserProfiles
+#       requestBody:
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/User.json'
+#       responses:
+#         200:
+#           description: Return the list of Electrical operator and User profiles
+#           content:
+#             application/json:
+#              schema:
+#               $ref: '#/components/schemas/UserOrganizations.json'
+#         400:
+#           description: Bad Request
+#         401:
+#           description: "Unauthorized"
+#         404:
+#           description: "Not Found"
+#   /userProfile:
+#     post:
+#       tags:
+#         - LOGIN    
+#       summary: getUserMenu
+#       description: User profile chosen to log in 
+#       operationId: getUserMenu
+#       requestBody:
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/UserProfile.json'
+#       responses:
+#         200:
+#           description: Return the list of Electrical operator and User profiles
+#           content:
+#             application/json:
+#              schema:
+#               $ref: '#/components/schemas/userMapSite.json'
+#         400:
+#           description: Bad Request
+#         401:
+#           description: "Unauthorized"
+#         404:
+#           description: "Not Found"          
+#   /giornoFineAcconto:
+#     get:
+#       tags:
+#         - GESTIONE INTERVALLI DI COMUNICAZIONE
+#       operationId: getgiornoFineAcconto
+#       responses:
+#         200:
+#           description: Return the User
+#           content:
+#             application/json:
+#              schema:
+#               $ref: '#/components/schemas/GiornoFineAcconto.json'
+#         400:
+#           description: Bad Request
+#         401:
+#           description: "Unauthorized"
+#         404:
+#           description: "Not Found"
+#   /giornoFineAcconto/{id}:
+#     patch:
+#       tags:
+#         - GESTIONE INTERVALLI DI COMUNICAZIONE
+#       operationId: patchgiornoFineAcconto
+#       parameters:
+#       - name: id
+#         in: path
+#         description: 'document identification'
+#         required: true
+#         schema:
+#           type: integer
+#       - name: giornoFineAcconto
+#         in: query
+#         description: 'Last day valid for the down payment of the previous month''s data'
+#         required: true
+#         schema:
+#           type: integer          
+#       responses:
+#         200:
+#           description: Return the User
+#           content:
+#             application/json:
+#              schema:
+#               $ref: '#/components/schemas/GiornoFineAcconto.json'
+#         400:
+#           description: Bad Request
+#         401:
+#           description: "Unauthorized"
+#         404:
+#           description: "Not Found"          
+# components:
+#   schemas:
+#     User.json:
+#       description: information of the user you want to log in
+#       properties:
+#         username:
+#           type: string
+#           example: "user345"
+#         application:
+#           type: string
+#           example: "web"          
+#     UserOrganizations.json:
+#       description: information of the user you want to log in
+#       properties:
+#         username:
+#           type: string
+#           example: "user345"
+#         application:
+#           type: string
+#           example: "web"     
+#         fullName:
+#           type: string
+#           example: "Nome Cognome"    
+#         organizations:
+#           description: List of electrica operators for the user
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Organization.json'          
+#     Organization.json:
+#       description: Electric operator that can be simulated by the user
+#       properties:
+#         idOrganization:
+#           type: number
+#           example: 3345
+#         organizationName:
+#           type: string
+#           example: "ARETI S.p.A."    
+#         organizationProfiles:
+#           description: list of profiles that an electric operator can take on
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Profile.json'            
+#     Profile.json:
+#       description: Electric operator that can be simulated by the user
+#       properties:
+#         idProfile:
+#           type: number
+#           example: 378
+#         profileName:
+#           type: string
+#           example: "UTENTE DISPACCIAMENTO"
+#     UserProfile.json:
+#       description: User profile chosen to log in
+#       properties:
+#         username:
+#           type: string
+#           example: "user345"  
+#         idOrganization:
+#           type: number
+#           example: 3345    
+#         idProfile:
+#           type: number
+#           example: 378          
+#     userMapSite.json:
+#       description: Navigation menu of the logged in user
+#       properties:
+#         username:
+#           type: string
+#           example: "user345"  
+#         application:
+#           type: string
+#           example: "web"     
+#         fullName:
+#           type: string
+#           example: "Nome Cognome"            
+#         idOrganization:
+#           type: number
+#           example: 3345 
+#         organizationName:
+#           type: string
+#           example: "ARETI S.p.A."           
+#         idProfile:
+#           type: number
+#           example: 378               
+#         profileName:
+#           type: string
+#           example: "UTENTE DISPACCIAMENTO"          
+#         menu:
+#           description: list of profiles that an electric operator can take on
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Menu.json'           
+#     Menu.json:
+#       description: Electric operator that can be simulated by the user
+#       properties:
+#         id_site_map:
+#           type: number
+#           example: 30
+#         titolo:
+#           type: string
+#           example: "Amministrazione"            
+#         menu:
+#           description: menu functionality
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Menu.json'           
+#     GiornoFineAcconto.json:
+#       description: Electric operator that can be simulated by the user
+#       properties:
+#         id:
+#           type: number    
+#           example: 30
+#         giornoFineAcconto:
+#           type: number    
+#           example: 15
